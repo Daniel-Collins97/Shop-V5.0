@@ -1,8 +1,11 @@
+
 /**
- * The Product class
- *  
+ * The full Product class which was specifically developed to demonstrate the 
+ * use of ArrayList.
+ * 
  * @author Siobhan Drohan, Mairead Meagher
  */
+
 public class Product
 {
     private String productName;
@@ -10,12 +13,6 @@ public class Product
     private double unitCost;
     private boolean inCurrentProductLine;
 
-    /**
-     * Constructor for objects of class Product
-     * @param productName Name of the product
-     * @param productCode Code of the product
-     * @param unitCost Unit cost of the product
-     */
     public Product(String productName, int productCode, double unitCost, boolean inCurrentProductLine)
     {
         this.productName = productName;
@@ -23,74 +20,60 @@ public class Product
         this.unitCost = unitCost;
         this.inCurrentProductLine = inCurrentProductLine;
     }
-         
-    //-------
-    //getters
-    //-------
-    /**
-     * Returns the Product Name 
-     */
-    public String getProductName(){
+    
+    public Product()
+    {
+    }
+    
+    public String getProductName()
+    {
         return productName;
     }
     
-    /**
-     * Returns the Unit Cost 
-     */
-    public double getUnitCost(){
+    public double getUnitCost()
+    {
         return unitCost;
     }
+
+    public int getProductCode()
+    {
+        return productCode;
+    }
+    
+    public boolean getInCurrentProductLine()
+    {
+        return inCurrentProductLine;
+    }    
     
     /**
-     * Returns the Product Code 
-     */
-    public int getProductCode() {
-		return productCode;
-	}
-
-    /**
-     * Returns a boolean indicating if the product is in the current product line 
-     */
-    public boolean isInCurrentProductLine() {
-		return inCurrentProductLine;
-	}
-
-    //-------
-    //setters
-    //-------
-    /**
-     * Updates the Product Code to the value passed as a parameter 
-     * @param productCode The new Product Code
-     */
-	public void setProductCode(int productCode) {
-		this.productCode = productCode;
-	}
-
-	/**
-     * Updates the Product Name to the value passed as a parameter 
-     * @param productName The new Product Name
-     */
+	 * @param productName the productName to set
+	 */
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
 
 	/**
-     * Updates the Unit Cost to the value passed as a parameter 
-     * @param unitCost The new unit cost for the product
-     */
+	 * @param productCode the productCode to set
+	 */
+	public void setProductCode(int productCode) {
+		this.productCode = productCode;
+	}
+
+	/**
+	 * @param unitCost the unitCost to set
+	 */
 	public void setUnitCost(double unitCost) {
 		this.unitCost = unitCost;
 	}
 
 	/**
-     * Updates the boolean indicating whether the product is in the current product line or not.  
-     * @param inCurrentProductLine Indicator that determines if the product is in the current product line or not.
-     */
+	 * @param inCurrentProductLine the inCurrentProductLine to set
+	 */
 	public void setInCurrentProductLine(boolean inCurrentProductLine) {
 		this.inCurrentProductLine = inCurrentProductLine;
 	}
 
-    /**
+	/**
      * Builds a String representing a user friendly representation of the object state
      * @return Details of the specific product
      */
@@ -98,8 +81,8 @@ public class Product
     {
         return "Product description: " + productName
              + ", product code: " + productCode
-             + ", unit cost: " + unitCost
+             + ", unit cost: €" + unitCost
              + ", currently in product line: " + inCurrentProductLine;
     }
-
+    
 }

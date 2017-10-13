@@ -1,36 +1,30 @@
 import java.util.Scanner;
 
 /**
- * This class runs the application and handles the Store with its Products.
- *  
- * @author Siobhan Drohan, Mairead Meagher
- */
-public class Driver{
-	private Scanner input;
-    private Store store;
+* This class displays a basic menu for the Shop.
+* 
+* @author Mairead, Siobhan
+*/
 
-    public static void main(String[] args) {
-		Driver app = new Driver();
-	}
+public class Driver
+{
+    private Scanner input;
+    private Store store;
     
-    public Driver(){
-        input = new Scanner(System.in);
+    public Driver()
+    {
+        input = new Scanner(System.in);        
         store = new Store();
         runMenu();
     }
     
-//    private void processOrder(){
-//        //find out from the user how many products they would like to order
-//        System.out.print("How many Products would you like to have in your Store?  ");
-//        int numberProducts = input.nextInt();
-//        
-//
-//    	//ask the user for the details of the products and add them to the order
-//    	for (int i = 0; i < numberProducts; i++){
-//            addProduct();
-//            System.out.println();
-//    	}
-//    }
+    /**
+     * Starts the application
+     * @param args
+     */
+    public static void main (String args[]){
+    	Driver app = new Driver();
+    }
     
     /**
      * mainMenu() - This method displays the menu for the application, 
@@ -44,154 +38,208 @@ public class Driver{
         System.out.println("---------");     
         System.out.println("  1) Add a Product");    
         System.out.println("  2) List the Products");    
-        System.out.println("  3) Update a Product");     
+        System.out.println("  3) Update a Product");        
         System.out.println("  4) Delete a Product"); 
-        System.out.println("---------");
-        System.out.println("  5) List the cheapest Product");
+        System.out.println("---------");     
+        System.out.println("  5) List the cheapest product");        
         System.out.println("  6) List the products in our current product line"); 
         System.out.println("  7) Display average product unit cost"); 
-        System.out.println("  8) List products that are more expensive than a given price");     
+        System.out.println("  8) List products that are more expensive than a given price");  
+        System.out.println("---------");     
+        System.out.println("  9) Save products to product.xml");
+        System.out.println("  10) Load products from product.xml");     
         System.out.println("  0) Exit");
         System.out.print("==>> ");
         int option = input.nextInt();
         return option;
     }
-
     
-    /**
-     * This is the method that controls the loop.
-     */
-   private void runMenu()
-   {
-       int option = mainMenu();
-       while (option != 0)
-       {
-          
-           switch (option)
-           {
-              case 1:    addProduct();
-           	             break;
-              case 2:    System.out.println(store.listProducts());
-                         break;
-              case 3:	 editProduct();
-              			 break;
-              case 4:	 deleteProduct();
-              			 break;
-              case 5:    System.out.println(store.cheapestProduct());
-                         break;
-              case 6:    System.out.println(store.listCurrentProducts());
-                         break;
-              case 7:    System.out.println(store.averageProductPrice());
-                         break;
-              case 8:    System.out.print("Enter the price barrier: ");
-                         double price = input.nextDouble();
-                         System.out.println(store.listProductsAboveAPrice(price));
-                         break;
-             default:    System.out.println("Invalid option entered: " + option);
-                         break;
-           }
-           
-           //pause the program so that the user can read what we just printed to the terminal window
-           System.out.println("\nPress any key to continue...");
-           input.nextLine();
-           input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
-           
-           //display the main menu again
-           option = mainMenu();
-       }
-      
-       //the user chose option 0, so exit the program
-       System.out.println("Exiting... bye");
-       System.exit(0);
-   }
-    
-    
-    //gather the product data from the user and create a new product.
-    private void addProduct(){  
-        //dummy read of String to clear the buffer - bug in Scanner class.
-    	input.nextLine();
-    	System.out.print("Enter the Product Name:  ");
-        String productName = input.nextLine();
-        System.out.print("Enter the Product Code:  ");
-        int productCode = input.nextInt();
-        System.out.print("Enter the Unit Cost:  ");
-        double unitCost = input.nextDouble();
-    	System.out.print("Is this product in your current line (y/n): ");
-       	char currentProduct = input.next().charAt(0);
-    	boolean inCurrentProductLine = false;
-    	if ((currentProduct == 'y') || (currentProduct == 'Y'))
-    		inCurrentProductLine = true;
-    	
-    	store.add(new Product(productName, productCode, unitCost, inCurrentProductLine));
-    }
-    
-    
-    
-    private void deleteProduct()
+     /**
+      * This is the method that controls the loop.
+      */
+    private void runMenu()
     {
-    	//list products and ask user to choose which product to delete
-    	System.out.println(store.listProducts());
-    	if(store.getProducts().size() != 0)
+    	try
     	{
-    		System.out.println("Index of product to delete: ");
-    		int index = input.nextInt();
-    		
-    		if(index <= store.getProducts().size())
+    		int option = mainMenu();
+    		while (option != 0)
     		{
-    	    	//delete product at  given index
-    	    	store.getProducts().remove(index-1);
-    	    	System.out.println("Product " + (index) + " deleted.");
+    			
+    			switch (option)
+    			{
+    				case 1:    addProduct();
+    						break;
+    				case 2:    System.out.println(store.listProducts());
+    						break;
+    				case 3:    editProduct();
+    						break;
+    				case 4:    deleteProduct();
+    						break;
+    				case 5:    System.out.println(store.cheapestProduct());
+    						break;
+    				case 6:    System.out.println(store.listCurrentProducts());
+    						break;
+    				case 7:    System.out.println(store.averageProductPrice());
+    						break;
+    				case 8:    try
+    						{
+    							System.out.print("Enter the price barrier: ");
+            	   			  	double price = input.nextDouble();
+            	   			  	System.out.println(store.listProductsAboveAPrice(price));
+               			  	}
+               			  	catch (Exception e)
+               			  	{
+               			  		System.out.println("Error: " + e);
+               			  	}
+                          	break;
+    				case 9:	  try
+    						{
+    							store.save();
+               			  	}
+               			  	catch (Exception e)
+               			  	{
+               			  		System.out.println("Error writing to file: " + e);
+               			  	}
+               			  	break;
+    				case 10:	  try
+    						{
+    							store.load();
+               			  	}
+               			  	catch (Exception e)
+               			  	{
+               			  		System.out.println("Error reading from file: " + e);
+               			  	}
+               			  	break;
+    				default:    System.out.println("Invalid option entered: " + option);
+    						break;
+    			}
+            
+            
+    			//pause the program so that the user can read what we just printed to the terminal window
+    			System.out.println("\nPress any key to continue...");
+    			input.nextLine();
+    			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+            
+    			//display the main menu again
+    			option = mainMenu();
     		}
-    		else
-    		{
-    			System.out.println("There is no Product for this Index number");
-    		}
+       
+    		//the user chose option 0, so exit the program
+    		System.out.println("Exiting... bye");
+    		System.exit(0);
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println("Error: " + e);
+    		System.out.println("\nPress any key to continue...");
+			input.nextLine();
+			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+        
+			//display the main menu again
+			mainMenu();
     	}
     }
     
-    
+    public void addProduct()
+    {
+    	try
+    	{
+    		System.out.print("Please enter the product description: ");
+    		String desc = input.nextLine();
+    		desc = input.nextLine();
+    		System.out.print("Please enter the product code: ");
+    		int code = input.nextInt();
+    		System.out.print("Please enter the product cost: ");
+    		double cost = input.nextDouble();
+    		System.out.print("Is this product in your current line (y/n): ");
+    		char currentProduct = input.next().charAt(0);
+    		boolean inCurrentProductLine = false;
+    		if ((currentProduct == 'y') || (currentProduct == 'Y'))
+    		inCurrentProductLine = true;
+    		store.add(new Product(desc, code, cost, inCurrentProductLine ));
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println("Error: " + e);
+    	}
+}
+  
     
     public void editProduct()
     {
-    	//list products and ask user what product to edit
+        //list the products and ask the user to choose the product to edit
     	System.out.println(store.listProducts());
     	
-    	if(store.getProducts().size() !=0)
-    	{
-    		//only process the update if products exist in the array list
-    		System.out.println("Index of Product to be edited: ");
-    		int index = input.nextInt();
+    	if (store.getProducts().size() != 0){	
+    		//only process the update if products exist in the ArrayList
     		
-    		if(index <= store.getProducts().size())
+    		try
     		{
-    			//if the index number is within the arraylist
-    			//get new details from user
-    			input.nextLine();
-    			System.out.println("Enter a new Product Name: ");
-    			String desc = input.nextLine();
-    			System.out.println("Enter a new Product Code: ");
-    			int code = input.nextInt();
-    			System.out.println("Enter a new Unit Cost: ");
-    			double cost = input.nextDouble();
-    			System.out.println("Is this Product in your current line? (y/n) : ");
-    			char currentProduct = input.next().charAt(0);
-    			boolean inCurrentProductLine = false;
-    			if((currentProduct == 'y')||(currentProduct == 'Y'))
-    			{
-    				inCurrentProductLine = true;
-    			}
+    			System.out.print("Index of product to edit ==>");
+    			int index = input.nextInt();
+    		
+    			if (index < store.getProducts().size())
+    			{	
+    				//if the index number exists in the ArrayList, gather the new details from the user
+    				System.out.print("   Enter a new product description: ");
+    				String desc = input.nextLine();
+    				desc = input.nextLine();
+    				System.out.print("   Enter a new product code: ");
+    				int code = input.nextInt();
+    				System.out.print("   Enter a new product cost: ");
+    				double cost = input.nextDouble();
+    				System.out.print("   Is this product in your current line (y/n): ");
+    				char currentProduct = input.next().charAt(0);
+    				boolean inCurrentProductLine = false;
+    				if ((currentProduct == 'y') || (currentProduct == 'Y'))
+    					inCurrentProductLine = true;
     	
-    			//get product from arraylist and update it
-    			Product product = store.getProducts().get(index-1);
-    			product.setProductName(desc);
-    			product.setProductCode(code);
-    			product.setUnitCost(cost);
-    			product.setInCurrentProductLine(inCurrentProductLine);
+    				//retrieve the product from the ArrayList and update the details with the user input
+    				Product product = store.getProducts().get(index);
+    				product.setProductName(desc);
+    				product.setProductCode(code);
+    				product.setUnitCost(cost);
+    				product.setInCurrentProductLine(inCurrentProductLine);
+    			}
+    			else
+    			{
+    				System.out.println("There is no product for this index number");
+    			}
     		}
-    		else
+    		catch(Exception e)
     		{
-    			System.out.println("There are no products for this index number");
+    			System.out.println("Error: " + e);
     		}
     	}
+    } 
+    
+    public void deleteProduct()
+    {
+        //list the products and ask the user to choose the product to edit
+    	System.out.println(store.listProducts());
+   
+    	try
+    	{
+    		if (store.getProducts().size() != 0)
+    		{	
+    			//only process the delete if products exist in the ArrayList
+    			System.out.print("Index of product to delete ==>");
+    			int index = input.nextInt();
+    		
+    			if (index < store.getProducts().size()){	
+    				//if the index number exists in the ArrayList, delete it from the ArrayList
+    				store.getProducts().remove(index);
+    				System.out.println("Product deleted.");
+    			}
+    			else
+    			{
+    				System.out.println("There is no product for this index number");
+    			}
+    		}
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println("Error: " + e);
+    	}
     }
-}
+ }
