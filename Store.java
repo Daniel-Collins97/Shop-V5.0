@@ -1,72 +1,100 @@
+import java.util.ArrayList;
 
-public class Store 
-{
-	private Product[] products;
-	private int total;
+public class Store {
 
-	//Constructor
-	public Store(int numberItems)
-	{
-		products = new Product[numberItems];
-		total = 0;
+	private ArrayList<Product>products;
+
+	public Store(){
+		products = new ArrayList<Product>();
 	}
-	
-	private boolean isFull()
+
+	public void add(Product product)
 	{
-		if(total == products.length)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		products.add(product);
 	}
-	
-	
-	private boolean isEmpty()
-	{
-		if(total == 0)
+
+    public String listProducts(){
+        if (products.size() == 0){
+            return "No products";
+        }
+        else{
+            String listOfProducts = "";
+            for (int i = 0; i < products.size(); i++){
+                listOfProducts = listOfProducts + i + ": " + products.get(i) + "\n";
+            }
+            return listOfProducts;
+        } 
+    }
+	public String cheapestProduct()
+	{	
+		Product cheapestProduct = products.get(0);
+		for (int i = 0; i < products.size(); i++)
 		{
-			return true;
-		}
-		
-		else
-		{
-			return false;
-		}
-	}
-	
-	public boolean add(Product obj)
-	{
-		if(isFull() == true)
-		{
-			return false;
-		}
-		else
-		{
-			products[total] = obj;
-			total++;
-			return true;
-		}
-		
-	}
-	
-	public String listProducts()
-	{
-		if(isEmpty())
-		{
-			return "No Products";
-		}
-		else
-		{
-			String productString = "";
-			for (int i = 0; i < products.length; i++) 
+			if (products.get(i).getUnitCost() < cheapestProduct.getUnitCost() )
 			{
-				productString += products[i] + "\n";
+				cheapestProduct = products.get(i);
 			}
-			return productString;
+		/*	//else
+			{
+				return "No Products are in the ArrayList";
+			}*/
 		}
+		return cheapestProduct.getProductName();
 	}
+	
+    private double toTwoDecimalPlaces(double num){
+        return (int) (num *100 ) /100.0; 
+    }
 
+	public String listCurrentProducts()
+	{
+        if (products.size() == 0){
+            return "No products";
+        }
+        else{
+            String listOfProducts = "";
+            for (int i = 0; i < products.size(); i++)
+            {
+            	if (products.get(i).isInCurrentProductLine())
+            	{
+            		listOfProducts = listOfProducts + i + ": " + products.get(i) + "\n";
+            	}
+            }
+            return listOfProducts;
+        }
+    }
+
+    public double averageProductPrice()
+    { 
+        if (products.size() != 0){
+            double totalPrice = 0;
+            for (int i = 0; i < products.size(); i++){
+                totalPrice = totalPrice + products.get(i).getUnitCost();
+            }
+            return toTwoDecimalPlaces(totalPrice / products.size());
+        }
+        else{
+            return 0.0;
+        }
+    }
+
+	public String listProductsAboveAPrice(double price)
+	{
+		String str = "";
+        if (products.size() == 0)
+        {
+            return "No products";
+        }
+        else
+        {
+        	for (int i = 0; i < products.size(); i++)
+        	{
+        		if (products.get(i).getUnitCost() > price)
+        		{
+        			str = str + i + ": " + products.get(i) + "\n";
+        		}
+        	}
+        	return str;
+        }
+	}    
 }
